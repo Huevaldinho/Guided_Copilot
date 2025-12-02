@@ -2,9 +2,14 @@ import json
 import os
 import tempfile
 import uuid
+import logging
 from typing import Any, Dict, List, Optional
-from filelock import FileLock
+from filelock import FileLock, Timeout
 from datetime import datetime
+from ..core.exceptions import DataPersistenceError, FileLockError
+from ..core.error_tracking import get_error_tracker
+
+logger = logging.getLogger(__name__)
 
 DEFAULT_STRUCTURE = {
     "users": [],
@@ -23,25 +28,75 @@ class JSONRepository:
             self._write_data(DEFAULT_STRUCTURE)
 
     def _read_data(self) -> Dict[str, Any]:
-        lock = FileLock(self.lock_path)
-        with lock:
-            if not os.path.exists(self.path):
-                return json.loads(json.dumps(DEFAULT_STRUCTURE))
-            with open(self.path, "r", encoding="utf-8") as fh:
-                try:
-                    data = json.load(fh)
-                except json.JSONDecodeError:
+        lock = FileLock(self.lock_path, timeout=5)
+        try:
+            with lock:
+                if not os.path.exists(self.path):
                     return json.loads(json.dumps(DEFAULT_STRUCTURE))
+                with open(self.path, "r", encoding="utf-8") as fh:
+                    try:
+                        data = json.load(fh)
+                    except json.JSONDecodeError as e:
+                        error_tracker = get_error_tracker()
+                        error_tracker.log_error(
+                            "DataPersistence",
+                            f"JSON file corrupted: {str(e)}",
+                            "CORRUPTED_JSON_FILE",
+                            {"file_path": self.path},
+                            e,
+                        )
+                        return json.loads(json.dumps(DEFAULT_STRUCTURE))
+        except Timeout:
+            error_tracker = get_error_tracker()
+            error_record = error_tracker.log_error(
+                "FileLocking",
+                f"File lock timeout on {self.path}",
+                "FILE_LOCK_ERROR",
+                {"file_path": self.path},
+            )
+            raise FileLockError(error_record["message"], error_record["details"])
+        except Exception as e:
+            error_tracker = get_error_tracker()
+            error_record = error_tracker.log_error(
+                "DataPersistence",
+                f"Failed to read data: {str(e)}",
+                "DATA_READ_ERROR",
+                {"file_path": self.path},
+                e,
+            )
+            raise DataPersistenceError(error_record["message"], error_record["details"])
         return data
 
     def _write_data(self, data: Dict[str, Any]) -> None:
-        lock = FileLock(self.lock_path)
-        with lock:
-            dir_name = os.path.dirname(self.path)
-            with tempfile.NamedTemporaryFile("w", delete=False, dir=dir_name, encoding="utf-8") as tf:
-                json.dump(data, tf, ensure_ascii=False, indent=2, default=str)
-                tmpname = tf.name
-            os.replace(tmpname, self.path)
+        lock = FileLock(self.lock_path, timeout=5)
+        try:
+            with lock:
+                dir_name = os.path.dirname(self.path)
+                with tempfile.NamedTemporaryFile(
+                    "w", delete=False, dir=dir_name, encoding="utf-8"
+                ) as tf:
+                    json.dump(data, tf, ensure_ascii=False, indent=2, default=str)
+                    tmpname = tf.name
+                os.replace(tmpname, self.path)
+        except Timeout:
+            error_tracker = get_error_tracker()
+            error_record = error_tracker.log_error(
+                "FileLocking",
+                f"File lock timeout on {self.path}",
+                "FILE_LOCK_ERROR",
+                {"file_path": self.path},
+            )
+            raise FileLockError(error_record["message"], error_record["details"])
+        except Exception as e:
+            error_tracker = get_error_tracker()
+            error_record = error_tracker.log_error(
+                "DataPersistence",
+                f"Failed to write data: {str(e)}",
+                "DATA_WRITE_ERROR",
+                {"file_path": self.path},
+                e,
+            )
+            raise DataPersistenceError(error_record["message"], error_record["details"])
 
     # Course operations
     def list_courses(self) -> List[Dict[str, Any]]:

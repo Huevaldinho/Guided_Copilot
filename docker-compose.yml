@@ -2,6 +2,8 @@ version: "3.8"
 services:
   backend:
     build: .
+    container_name: lms-backend
+    restart: always
     volumes:
       - ./data:/data
       - ./src:/app/src
@@ -9,3 +11,16 @@ services:
       - "8000:8000"
     environment:
       - DATA_FILE_PATH=/data/lms_data.json
+      - ALERT_EMAIL=${ALERT_EMAIL:-}
+      - ALERTS_DIR=/data/alerts
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
