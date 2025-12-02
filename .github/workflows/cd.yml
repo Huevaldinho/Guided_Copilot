@@ -1,0 +1,31 @@
+name: CD
+
+on:
+  push:
+    branches: [ main ]
+    tags: [ 'v*' ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: python -m pip install --upgrade pip && pip install -r requirements.txt terraform
+      - name: Run tests
+        run: pytest -q --cov=src --cov-fail-under=85
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+      - name: Terraform Init (placeholder)
+        run: echo "Terraform init with GCS backend would run here (requires GCP_SA_JSON_KEY secret)"
+      - name: Terraform Apply (placeholder)
+        run: echo "Terraform apply -auto-approve would run here on main; manual approval on tags"
+      - name: Build and push image (placeholder)
+        run: echo "Build image and push to us-central1-docker.pkg.dev/lms-exercise-2025/lms-registry"
