@@ -1,0 +1,1 @@
+WARNING  src.app.application.services:services.py:97 Bulk enrollment attempted for non-existent course: invalid-course-id

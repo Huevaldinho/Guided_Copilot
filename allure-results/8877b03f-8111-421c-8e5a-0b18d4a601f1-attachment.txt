@@ -1,0 +1,1 @@
+WARNING  src.app.routes.courses:courses.py:119 Bulk enrollment attempted for non-existent course: 0c855622-d75a-41ba-bc26-edd9bbc615ca

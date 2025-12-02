@@ -1,0 +1,6 @@
+ERROR    src.app.core.error_tracking:error_tracking.py:68 [TEST_CODE] error 0
+ERROR    src.app.core.error_tracking:error_tracking.py:68 [TEST_CODE] error 1
+ERROR    src.app.core.error_tracking:error_tracking.py:68 [TEST_CODE] error 2
+ERROR    src.app.core.error_tracking:error_tracking.py:68 [TEST_CODE] error 3
+ERROR    src.app.core.error_tracking:error_tracking.py:68 [TEST_CODE] error 4
+ERROR    src.app.core.error_tracking:error_tracking.py:68 [TEST_CODE] error 5

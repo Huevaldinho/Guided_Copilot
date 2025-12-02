@@ -1,0 +1,2 @@
+ERROR    src.app.core.error_tracking:error_tracking.py:66 Failed to write error log: [Errno 2] No such file or directory: 'C:\\Users\\felip\\AppData\\Local\\Temp\\tmpvnr_xcmn\\error.log'
+ERROR    src.app.core.error_tracking:error_tracking.py:68 [TEST_ERROR] Test error message

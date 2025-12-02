@@ -1,0 +1,1 @@
+ERROR    src.app.core.error_tracking:error_tracking.py:68 [FILE_LOCK_ERROR] File lock timeout on C:\Users\felip\AppData\Local\Temp\tmpeem2ogb5\test.json

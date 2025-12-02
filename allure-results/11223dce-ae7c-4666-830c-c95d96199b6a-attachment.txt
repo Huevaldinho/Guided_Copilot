@@ -1,0 +1,6 @@
+[31m[1mERROR   [0m src.app.core.error_tracking:error_tracking.py:68 [UNHANDLED_EXCEPTION] Unexpected error: 3 validation errors:
+  {'type': 'missing', 'loc': ('response', 'total'), 'msg': 'Field required', 'input': {'status': 'accepted', 'detail': 'bulk enroll started'}}
+  {'type': 'missing', 'loc': ('response', 'enrolled'), 'msg': 'Field required', 'input': {'status': 'accepted', 'detail': 'bulk enroll started'}}
+  {'type': 'missing', 'loc': ('response', 'skipped'), 'msg': 'Field required', 'input': {'status': 'accepted', 'detail': 'bulk enroll started'}}
+
+[33mWARNING [0m src.app.core.notifications:notifications.py:62 ALERT_EMAIL not configured; cannot send email for UNHANDLED_EXCEPTION

@@ -1,0 +1,2 @@
+[31m[1mERROR   [0m src.app.core.error_tracking:error_tracking.py:68 [BULK_ENROLLMENT_TASK_FAILED] Background bulk enrollment failed for course 9777d46d-b252-43e6-83a3-c63a35c1655c: underlying read() should have returned a bytes-like object, not 'str'
+[33mWARNING [0m src.app.core.notifications:notifications.py:62 ALERT_EMAIL not configured; cannot send email for BULK_ENROLLMENT_TASK_FAILED

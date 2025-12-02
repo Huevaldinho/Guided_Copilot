@@ -1,0 +1,2 @@
+ERROR    src.app.core.error_tracking:error_tracking.py:68 [FILE_LOCK_ERROR] msg
+ERROR    src.app.core.error_tracking:error_tracking.py:68 [VALIDATION_ERROR] msg

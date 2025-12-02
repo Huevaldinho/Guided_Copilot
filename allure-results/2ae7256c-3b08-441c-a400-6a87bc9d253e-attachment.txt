@@ -1,0 +1,6 @@
+[1m[31mERROR   [0m src.app.core.error_tracking:error_tracking.py:68 [TEST_CODE] error 0
+[1m[31mERROR   [0m src.app.core.error_tracking:error_tracking.py:68 [TEST_CODE] error 1
+[1m[31mERROR   [0m src.app.core.error_tracking:error_tracking.py:68 [TEST_CODE] error 2
+[1m[31mERROR   [0m src.app.core.error_tracking:error_tracking.py:68 [TEST_CODE] error 3
+[1m[31mERROR   [0m src.app.core.error_tracking:error_tracking.py:68 [TEST_CODE] error 4
+[1m[31mERROR   [0m src.app.core.error_tracking:error_tracking.py:68 [TEST_CODE] error 5

@@ -1,0 +1,1 @@
+{"uuid": "b9175998-a18f-4345-b5f5-a4201f5e3348", "children": ["a196df69-46d1-4b19-b47e-b47fd4017ecf"], "befores": [{"name": "client", "status": "passed", "start": 1764644978238, "stop": 1764644978243}], "afters": [{"name": "client::0", "status": "passed", "start": 1764644978246, "stop": 1764644978247}], "start": 1764644978238, "stop": 1764644978247}
